@@ -1,5 +1,5 @@
-import { request, response } from "express"
-import { productModel } from "../models/product.model.js"
+import { request, response } from 'express'
+import { productModel } from '../models/product.model.js'
 
 const productsGet = async (req = request, res = response) => {
     const products = await productModel.find()
@@ -12,27 +12,28 @@ const productsGet = async (req = request, res = response) => {
 const productsPost = async (req = request, res = response) => {
     const { body } = req
     let product = productModel(body)
-    await product.save()
+    const newProduct = await product.save()
     res.status(200).json({
         message: 'Datos agregados correctamente',
-        data: body
+        data: newProduct
     })
 }
 
 const productsPut = async (req = request, res = response) => {
     const { id, data } = req.body
+    const updatedProduct = await productModel.findByIdAndUpdate(id, data, { new: true })
     res.status(200).json({
-        message: 'Datos actualizados correctamente',
-        data: {id, data}
+        message: 'Producto actualizado',
+        data: updatedProduct
     })
 }
 
 const productsDelete = async (req = request, res = response) => {
     const { id } = req.body
-    await productModel.findByIdAndDelete(id)
+    const product = await productModel.findByIdAndDelete(id)
     res.status(200).json({
-        message: 'Dato eliminado correctamente',
-        data: {id}
+        message: 'Registro eliminado correctamente',
+        data: product
     })
 }
 
