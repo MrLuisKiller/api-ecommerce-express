@@ -10,7 +10,7 @@ const app = express()
 const PORT = config().parsed.PORT
 
 app.use(json())
-app.use(cors())
+app.use(cors({ origin: '*' }))
 app.use(cookieParser())
 
 app.get('/', (req, res) => {
