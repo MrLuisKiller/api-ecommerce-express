@@ -44,13 +44,12 @@ const usersDelete = async (req = request, res = response) => {
 }
 
 const loginPost = async (req = request, res = response) => {
-    let status, message, data, token = null
+    let status, message, data = null
     const body = req.body
     const userInfo = await userModel.findOne({ email: body.email, active: true })
     if (userInfo === null) {
         status = 400
         message = 'User not found or not active'
-        data = null
     } else {
         const comparePassword = await bcrypt.compare(body.password, userInfo.password)
         if (!comparePassword) {
@@ -59,15 +58,12 @@ const loginPost = async (req = request, res = response) => {
         } else {
             const { id, email, password } = userInfo
             status = 200
-            token = JWT.sign({ id, email, password }, config().parsed.SECRET)
+            data = JWT.sign({ id, email, password }, config().parsed.SECRET)
             message = 'Login success'
         }
         data = comparePassword
     }
-    if (token == null)
-        res.status(status).json({ message, data })
-    else
-        res.status(status).cookie('JWT', token).json({ message, data })
+    res.status(status).json({ message, data })
 }
 
 export { usersGet, usersPost, usersPut, usersDelete, loginPost }
