@@ -56,9 +56,9 @@ const loginPost = async (req = request, res = response) => {
             status = 401
             message = 'Invalid password'
         } else {
-            const { name, last_name, email } = userInfo
+            const { name, lastName, email } = userInfo
             const payload = {
-                full_name: `${name} ${last_name}`,
+                full_name: `${name} ${lastName}`,
                 email
             }
             status = 200
