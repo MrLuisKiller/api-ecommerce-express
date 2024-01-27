@@ -56,9 +56,13 @@ const loginPost = async (req = request, res = response) => {
             status = 401
             message = 'Invalid password'
         } else {
-            const { id, email, password } = userInfo
+            const { name, last_name, email } = userInfo
+            const payload = {
+                full_name: `${name} ${last_name}`,
+                email
+            }
             status = 200
-            data = JWT.sign({ id, email, password }, config().parsed.SECRET)
+            data = JWT.sign(payload, config().parsed.SECRET)
             message = 'Login success'
         }
     }
