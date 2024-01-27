@@ -61,7 +61,6 @@ const loginPost = async (req = request, res = response) => {
             data = JWT.sign({ id, email, password }, config().parsed.SECRET)
             message = 'Login success'
         }
-        data = comparePassword
     }
     res.status(status).json({ message, data })
 }
